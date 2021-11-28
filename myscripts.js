@@ -1,87 +1,82 @@
-// 1. Create a function that returns rock, paper or scissors.
-function computerPlay() {
-    let randomMove = Math.floor((Math.random() * 3));
-
-    // Display the move performed by the computer
-    // For Rock
-    if (randomMove == 0) {
-        console.log("The computer chose Rock.")
-        return 0;
-        
-    } // For Paper
-    else if (randomMove == 1) {
-        console.log("The computer chose Paper.")
-        return 1;
-    } // For Scissors
-        else {
-        console.log("The computer chose Scissors.")
-        return 2;
-    }
-}
-
-// 2. Create a function that plays out a round
-// a. Assign value to a variable 'playerSelection' and 'computerSelection'
-const playerSelection = window.prompt("Rock, Paper or Scissors?").toUpperCase();
-const computerSelection = computerPlay();
-
-// Win states = 1
-// Draw states = 0
-// Lose states = -1
-
-function playRound (playerSelection, computerSelection) {
-    if (playerSelection == "ROCK") {
-        if (computerSelection == 0) {
-            console.log("It's a Draw! Let's go again.");
-            return 0;
-
-        } else if (computerSelection == 1) {
-            console.log("You Lose! Paper beats Rock.");
-            return (-1);
-
-        } else {
-            console.log("You Win!, Rock beats Scissors.");
-            return 1;
-        }
-    }   else if (playerSelection == "PAPER") {
-            if (computerSelection == 0) {
-                console.log("You Win! Paper beats Rock."); 
-                return 1;
-
-            } else if (computerSelection == 1) {
-                console.log("It's a Draw! Let's go again.");
-                return 0;
-
-            } else {
-                console.log("You Lose!, Scissors beats Paper.");
-                return (-1);
-        } 
-    }   else if (playerSelection == "SCISSORS") {
-            if (computerSelection == 0) {
-                console.log("You Lose! Rock beats Paper."); 
-                return (-1);
-
-            } else if (computerSelection == 1) {
-                console.log("You Win! Scissors beats Paper.");
-                return 1;
-
-            } else {
-                console.log("It's a Draw! Let's go again.");
-                return 0;
-            }
-        } else {
-            return console.log("Please choose between rock, paper or scissors.")
-        }
-    }   
-
-
-// Revised version of playRound
 // Capitalizes first letter of a string
 function capitalize(string) {
     return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
 }
 
-// Displays user's choice
-console.log("You chose " + capitalize(playerSelection) + ".");
-console.log(playRound(playerSelection, computerSelection));
+// Pseudocode
+// Rock, Paper, Scissors Game
+// 1. Create a function that randomly chooses an option from rock, paper and scissors and call it computerPlay()
+    // Create an array that contains all possible options
+    // Create a random number generator that outputs a number limited by the array's length
+function computerPlay() {
+    let myArray = ["rock", "paper", "scissors"]
+    return myArray[Math.floor(Math.random() * myArray.length)];
+}
 
-// 3. Create a function that plays out 5 rounds and declares a winner!
+// 2. Create a function that takes the playerSelection and computerSelection and output the playerScore and call it playRound()
+    // Create conditions that evaluate all possible outcomes: loss, win, draw
+    // Declare a variable that stores the player's score and have the function return that value
+
+function playRound(playerSelection, computerSelection) {
+    let playerPoint = 0;
+    if (playerSelection == computerSelection) {
+        console.log(`It's a tie! You both chose ${playerSelection}`)
+    }   else if(
+        (playerSelection == "rock" && computerSelection == "paper") ||
+        (playerSelection == "paper" && computerSelection == "scissors") ||
+        (playerSelection == "scissors" && computerSelection == "rock") 
+    ) {
+        console.log(`You lose! ${computerSelection} beats ${playerSelection}`);
+    }   else {
+        console.log(`You win! ${playerSelection} beats ${computerSelection}`);
+        playerPoint = 1;
+    }
+        return playerPoint;
+}
+
+// 3. Create a function that that plays a best of 5 rounds and call it game()
+    // Declare a variable such as roundsTotal = 5
+    // Declare a variable of the number of rounds played (roundsPlayed)
+    // Create a while loop that evaluates the condition (roundsPlayed < roundsTotal)
+        // Declare a variable that requires input from user 
+            // Create a condition that evaluates the user's input
+                // If user's input is invalid
+                    // Reiterate previous condition 
+                // If user's input is valid 
+                    // Win
+                        // Player score increments by 1
+                    // roundsPlayed increments by 1 
+    // Create an if statement that evaluates the score and displays win or lose 
+
+function game(roundsTotal = 5) {
+    let roundsPlayed = 0;
+    let playerScore = 0;
+
+    while(roundsPlayed < roundsTotal) {
+        playerSelection = window.prompt("What'll it be? Rock, paper or scissors?").toLowerCase();
+        
+        if (
+            (playerSelection != "rock") &&
+            (playerSelection != "paper") &&
+            (playerSelection != "scissors")
+        )   {
+            console.log("Please input a valid option.")
+            continue
+        }   
+            let computerSelection = computerPlay().toLowerCase();
+            if (playerSelection == computerSelection) {
+                console.log("You tied!");
+                continue;
+        }   
+            else {
+                playerScore += playRound(playerSelection, computerSelection);
+                ++roundsPlayed;      
+        }
+        
+    }
+    if (playerScore > roundsTotal/2) {
+            console.log(`You won ${playerScore} out of ${roundsTotal} games!`);
+        }   else {
+                console.log(`You lost ${roundsTotal - playerScore} out of ${roundsTotal} games!`);
+            }
+        }
