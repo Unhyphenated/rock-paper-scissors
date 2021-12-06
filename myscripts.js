@@ -80,3 +80,10 @@ function game(roundsTotal = 5) {
                 console.log(`You lost ${roundsTotal - playerScore} out of ${roundsTotal} games!`);
             }
         }
+
+// Monday, December 6 2021: Add JavaScript for Button Portion
+
+// Causes buttons to return the choices they represent (Example = Press 'rock' -> Returns 'rock' in console)
+const buttons = document.querySelectorAll("button");
+
+
