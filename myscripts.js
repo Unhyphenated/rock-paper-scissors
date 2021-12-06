@@ -2,7 +2,8 @@
 function capitalize(string) {
     return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
 }
-
+let playerScore = 0;
+let computerScore = 0;
 // Pseudocode
 // Rock, Paper, Scissors Game
 // 1. Create a function that randomly chooses an option from rock, paper and scissors and call it computerPlay()
@@ -18,72 +19,51 @@ function computerPlay() {
     // Declare a variable that stores the player's score and have the function return that value
 
 function playRound(playerSelection, computerSelection) {
-    let playerPoint = 0;
+    let result = "";
     if (playerSelection == computerSelection) {
-        console.log(`It's a tie! You both chose ${playerSelection}`)
-    }   else if(
+        result = `It's a tie! You both chose ${playerSelection}`
+    }   
+        else if(
         (playerSelection == "rock" && computerSelection == "paper") ||
         (playerSelection == "paper" && computerSelection == "scissors") ||
         (playerSelection == "scissors" && computerSelection == "rock") 
     ) {
-        console.log(`You lose! ${computerSelection} beats ${playerSelection}`);
-    }   else {
-        console.log(`You win! ${playerSelection} beats ${computerSelection}`);
-        playerPoint = 1;
-    }
-        return playerPoint;
-}
-
-// 3. Create a function that that plays a best of 5 rounds and call it game()
-    // Declare a variable such as roundsTotal = 5
-    // Declare a variable of the number of rounds played (roundsPlayed)
-    // Create a while loop that evaluates the condition (roundsPlayed < roundsTotal)
-        // Declare a variable that requires input from user 
-            // Create a condition that evaluates the user's input
-                // If user's input is invalid
-                    // Reiterate previous condition 
-                // If user's input is valid 
-                    // Win
-                        // Player score increments by 1
-                    // roundsPlayed increments by 1 
-    // Create an if statement that evaluates the score and displays win or lose 
-
-function game(roundsTotal = 5) {
-    let roundsPlayed = 0;
-    let playerScore = 0;
-
-    while(roundsPlayed < roundsTotal) {
-        playerSelection = window.prompt("What'll it be? Rock, paper or scissors?").toLowerCase();
-        
-        if (
-            (playerSelection != "rock") &&
-            (playerSelection != "paper") &&
-            (playerSelection != "scissors")
-        )   {
-            console.log("Please input a valid option.")
-            continue
-        }   
-            let computerSelection = computerPlay().toLowerCase();
-            if (playerSelection == computerSelection) {
-                console.log("You tied!");
-                continue;
-        }   
-            else {
-                playerScore += playRound(playerSelection, computerSelection);
-                ++roundsPlayed;      
+        result = (`You lose! ${computerSelection} beats ${playerSelection}`);
+        computerScore += 1;
+        if (computerScore == 5) {
+            result += "<br><br>I've won! Like you had a chance. Reload the page to match again." 
+            disableButtons();
         }
-        
-    }
-    if (playerScore > roundsTotal/2) {
-            console.log(`You won ${playerScore} out of ${roundsTotal} games!`);
-        }   else {
-                console.log(`You lost ${roundsTotal - playerScore} out of ${roundsTotal} games!`);
+    }   
+        else {
+            result = (`You win! ${playerSelection} beats ${computerSelection}`);
+            playerScore += 1;
+            if (playerScore == 5) {
+                result += "<br><br>Darn! You've bested me, reload the page to match again."
+                disableButtons();
             }
         }
+    document.getElementById('results').innerHTML = result + 
+    (`<br><br>Computer Score: ${computerScore}<br><br>Player Score: ${playerScore}`)
+}
+
+
+
 
 // Monday, December 6 2021: Add JavaScript for Button Portion
 
 // Causes buttons to return the choices they represent (Example = Press 'rock' -> Returns 'rock' in console)
 const buttons = document.querySelectorAll("button");
 
+buttons.forEach(button => { 
+    button.addEventListener('click', function(){
+        playRound(button.className, computerPlay());
+    })
+})
 
+// Disables buttons
+function disableButtons() {
+    buttons.forEach(button => {
+        button.disabled = true;
+    })
+}
